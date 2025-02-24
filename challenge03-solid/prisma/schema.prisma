@@ -7,47 +7,112 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// enum Role {
-//   ADMIN
-//   MEMBER
+enum Age {
+  Filhote
+  Adulto
+  Idoso
+}
+
+enum Size {
+  Pequenino
+  Medio
+  Grande
+}
+
+enum Energy {
+  Baixa
+  Media
+  Alta
+}
+
+enum Independence {
+  Baixo
+  Medio
+  Alta
+}
+
+enum Environment {
+  Amplo
+  Medio
+  Pequeno
+}
+
+model Pet {
+  id         String   @id @default(uuid())
+  name       String
+  about      String
+  age        Age      @default(Filhote)
+  size       Size     @default(Pequenino)
+  energy     Energy   @default(Baixa)
+  independence Independence @default(Baixo)
+
+  //photos ANALISAR COMO FAZER DEPOIS
+  created_at DateTime @default(now())
+
+  @@map("pets")
+
+}
+
+
+// model AdoptionRequirement {
+//   id         String   @id @default(uuid())
+//   content    String
+
+//   created_at    DateTime @default(now())
 // }
 
-// model User {
+
+
+// model Organization {
 //   id            String   @id @default(uuid())
 //   name          String
 //   email         String   @unique
 //   password_hash String
-//   role          Role     @default(MEMBER)
 //   created_at    DateTime @default(now())
-
-//   checkIns CheckIn[]
-
-//   @@map("users")
 // }
 
-// model CheckIn {
-//   id           String    @id @default(uuid())
-//   created_at   DateTime  @default(now())
-//   validated_at DateTime?
 
-//   user    User   @relation(fields: [user_id], references: [id])
-//   user_id String
 
-//   gym    Gym    @relation(fields: [gym_id], references: [id])
-//   gym_id String
 
-//   @@map("check_ins")
-// }
 
-// model Gym {
-//   id          String  @id @default(uuid())
-//   title       String
-//   description String?
-//   phone       String?
-//   latitude    Decimal
-//   longitude   Decimal
 
-//   checkIns CheckIn[]
 
-//   @@map("gyms")
-// }
+model User {
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  password_hash String
+  role          Role     @default(MEMBER)
+  created_at    DateTime @default(now())
+
+  checkIns CheckIn[]
+
+  @@map("users")
+}
+
+model CheckIn {
+  id           String    @id @default(uuid())
+  created_at   DateTime  @default(now())
+  validated_at DateTime?
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
+  gym    Gym    @relation(fields: [gym_id], references: [id])
+  gym_id String
+
+  @@map("check_ins")
+}
+
+model Gym {
+  id          String  @id @default(uuid())
+  title       String
+  description String?
+  phone       String?
+  latitude    Decimal
+  longitude   Decimal
+
+  checkIns CheckIn[]
+
+  @@map("gyms")
+}
